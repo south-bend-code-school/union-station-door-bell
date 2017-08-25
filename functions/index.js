@@ -7,6 +7,7 @@ admin.initializeApp(functions.config().firebase)
 exports.postToSlack = functions.database.ref('alerts/{alertId}')
 .onCreate(function (event) {
   const companyId = event.data.child('company').val()
+  const userName = event.data.child('name').val()
   const time = new Date(event.data.child('time').val())
 
   return new Promise(function (resolve, reject) {
@@ -15,7 +16,7 @@ exports.postToSlack = functions.database.ref('alerts/{alertId}')
         method: 'POST',
         uri: snapshot.child('webhookUrl').val(),
         body: {
-          text: 'You have a visitor downstairs.'
+          text: `<!channel>: ${userName} is waiting downstairs.`
         },
         json: true
       }).then(resolve,reject);
