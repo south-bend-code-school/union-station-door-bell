@@ -5,6 +5,7 @@
     },
     "alerts": {
       "$alertId": {
+        ".read": true,
         ".write": "!data.exists()",
       	".validate": "root.child('slackInfo').hasChild(newData.child('company').val()) && newData.hasChildren(['company','time'])"
       }

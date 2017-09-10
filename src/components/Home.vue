@@ -48,7 +48,9 @@ export default {
       })
     },
     sendAlert: function () {
-      firebase.database().ref('alerts').push({
+      const companyName = this.company.name
+      const alertRef = firebase.database().ref('alerts').push()
+      alertRef.set({
         company: this.company['.key'],
         name: this.name,
         time: Date.now()
@@ -57,8 +59,17 @@ export default {
         this.company = null
         this.$nextTick(() => {
           window.$('#modal1').modal('close')
-          window.Materialize.toast('Someone will be down shortly!', 2000)
+          window.Materialize.toast(companyName + ' has been notified!', 2000)
         })
+        const off = alertRef.on('value', (snapshot) => {
+          if (snapshot && snapshot.child('response').exists()) {
+            off()
+            window.Materialize.toast(snapshot.child('response').val(), 2000)
+          }
+        })
+        setTimeout(() => {
+          off()
+        }, 300000)
       })
     }
   },
@@ -74,18 +85,25 @@ export default {
   #home
     div
       spinner(v-if='!loaded')
-      .container(v-else)
-        .row
-          .col.s12.m6.scale-transition.scale-out(v-for='(company, index) in companies',:id="'company-'+index")
-            .card(v-if='logoSrcs[index]')
-              .card-image.blue-grey.lighten-2(v-bind:style='{minHeight: "40vh", backgroundImage: "url("+logoSrcs[index]+")", backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat"}')
-                span.card-title
-                  .truncate {{company.name}}
-                .btn-floating.halfway-fab.btn-small.waves-effect.waves-light.red.pulse(@click='openDialog(company)')
-                  i.material-icons notifications_active
-              .card-content.white-text.blue-grey.lighten-1
-                p {{company.description}}
-            spinner(v-else)
+      .row(v-else)
+        .col.s12.m3(
+          v-for='(company, index) in companies'
+          :id="'company-'+index")
+          .card.z-depth-0(
+            v-if='logoSrcs[index]'
+            style='background-color:white;')
+            .btn-floating.btn-small.waves-effect.waves-light.red.pulse(
+            @click='openDialog(company)'
+            style='position:absolute;top:1em;right:1em;')
+              i.material-icons notifications_active
+            .card-image(v-bind:style='{minHeight: "30vh", backgroundImage: "url("+logoSrcs[index]+")", backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat"}')
+            .card-content
+              .card-title.center
+                b.truncate(
+                  style='font-size:18px;'
+                ) {{company.name}}
+              p {{company.description}}
+          spinner(v-else)
     #modal1.modal.bottom-sheet
       .modal-content
         h4 Your Name?

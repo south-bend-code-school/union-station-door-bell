@@ -1,19 +1,18 @@
 <template lang='pug'>
-  #app
-    header
-      nav
-        .nav-wrapper
-          a.brand-logo.center(href='#') 113 Door Bell
+  #app.blue-grey.lighten-5
+    header(style='margin:20px 0;')
+      .row
+        .col.s10.m4.offset-s1.offset-m4
+          img(src='/static/images/door113_logo.png',style='width:100%;')
+      .row
+        .col.s10.m4.offset-s1.offset-m4.center
+          | Visiting a business in Building 113? Ring the doorbell and let them know you're here.
+          i.material-icons(style='font-size:14px;') notifications_active
     main.valign-wrapper.center-align
       router-view
-    footer.page-footer(style='padding-top: 0;')
-      .footer-copyright
-        .container
-          .right
-            | Created by 
-            span.code-works-link
-              | Code Works 
-              img(src='/static/images/code-works-logo.png',style='height:1em;')
+    footer(style='width:100%;margin:20px 0;')
+      div(style='width:200px;margin:auto;')
+        img(src='/static/images/createdbyW.svg',style='width:100%;')
 </template>
 
 <script>

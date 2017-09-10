@@ -1,6 +1,6 @@
 {
-  "name": "113 Door Bell",
-  "short_name": "Door Bell",
+  "name": "Door 113",
+  "short_name": "Door 113",
   "icons": [
     {
       "src": "/static/images/favicon.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#607d8b"
